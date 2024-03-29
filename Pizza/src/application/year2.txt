@@ -1,0 +1,94 @@
+Button searchYears = new Button("Search Years");
+				searchYears.setOnAction(eventHandler -> {
+					String Years = textfield3.getText();
+					TextField t = new TextField("");
+					int yearNumber = Integer.parseInt(Years);
+					int totalIsraeliLines = 0;
+					int totalGazaPowerPlant = 0;
+					int totalTotalDaily = 0;
+					double IsraeliAvg = 0.0;
+					int Israelicount = 0;
+                    VBox Box=new VBox();
+					YearNode<? extends Number> currentYearNode = yearlist.getHead();
+
+					while (currentYearNode != null) {
+						if (currentYearNode.getData().intValue() == yearNumber) {
+							System.out.println(currentYearNode.getData() + " : ");
+
+							MonthNode<? extends Number> currentMonthNode = currentYearNode.getMonthLinked().getHead();
+
+							while (currentMonthNode != null) {
+								DayNode<? extends Number> currentDayNode = currentMonthNode.getDaylinked().getHead();
+
+								while (currentDayNode != null) {
+									// Print details of each day within the month
+									// System.out.println("Month: " + currentMonthNode.getData());
+								/*	System.out.println("Day: " + currentDayNode.getData());
+									System.out.println("Israeil_Lines: " + currentDayNode.getIsraeil_Lines());
+									System.out.println("Gaza_Power_Plant: " + currentDayNode.getGaza_Power_Plant());
+									System.out.println("Egyption_Lines: " + currentDayNode.getEygyption_Line());
+									System.out.println("Total_daily_Supply: " + currentDayNode.getTotal_daily());
+									System.out.println("Over_all_demand: " + currentDayNode.getOverall_demand());
+									System.out.println(
+									"Power_Cuts_hours_day :" + currentDayNode.getPower_Cuts_hours_day());
+									System.out.println("Temp " + currentDayNode.getTemp());*/
+									double Day = currentDayNode.getData().intValue();
+									double israeliLines = currentDayNode.getIsraeil_Lines().intValue();
+									double gazaPowerPlant = currentDayNode.getGaza_Power_Plant().intValue();
+									double Egyption = currentDayNode.getEygyption_Line().intValue();
+									double totalDaily = currentDayNode.getTotal_daily().intValue();
+									double over_All = currentDayNode.getOverall_demand().intValue();
+									double Power_Cuts = currentDayNode.getPower_Cuts_hours_day().intValue();
+									double Temp = currentDayNode.getTemp().intValue();
+                                   
+									// Accumulate values for the entire year
+									totalIsraeliLines += currentDayNode.getIsraeil_Lines().intValue();
+									totalGazaPowerPlant += currentDayNode.getGaza_Power_Plant().intValue();
+									totalTotalDaily += currentDayNode.getTotal_daily().intValue();
+									Israelicount++;
+									// Create labels to display the information
+									Label ay = new Label("the Day is: " + Day);
+									Label israeliLinesLabel = new Label("Israeli Lines: " + israeliLines);
+									Label gazaPowerPlantLabel = new Label("Gaza Power Plant: " + gazaPowerPlant);
+									Label egyption = new Label("Total Daily: " + Egyption);
+									Label totalDailyLabel = new Label("Egyption: " + totalDaily);
+									Label overall = new Label("the over_All: " + over_All);
+									Label powercuts = new Label("the Power_Cuts: " + Power_Cuts);
+									Label temp = new Label("the Temp: " + Temp);
+									Label li = new Label("-------------------------------------------------------");
+									Box.getChildren().addAll(ay, israeliLinesLabel, gazaPowerPlantLabel, egyption,
+											totalDailyLabel, overall, powercuts, temp, li);
+									
+
+									currentDayNode = currentDayNode.getNext();
+								}
+
+								currentMonthNode = currentMonthNode.getNext();
+							}
+							break;
+						}
+
+						currentYearNode = currentYearNode.getNext();
+					}
+
+					Label totalIsraeliLinesLabel = new Label("Total Israeli Lines: " + totalIsraeliLines);
+					Label totalGazaPowerPlantLabel = new Label("Total Gaza Power Plant: " + totalGazaPowerPlant);
+					Label totalTotalDailyLabel = new Label("Total Egyption: " + totalTotalDaily);
+
+					if (Israelicount > 0) {
+						IsraeliAvg = (double) totalIsraeliLines / Israelicount;
+					}
+					Label israeliAvgLabel = new Label("Average Israeli Lines: " + IsraeliAvg);
+
+					Box.getChildren().addAll(totalIsraeliLinesLabel, totalGazaPowerPlantLabel, totalTotalDailyLabel,
+							israeliAvgLabel);
+					// the scrollPane provides a view of a component.that is large or one whose size
+					// can change dynamically
+					ScrollPane scrollPane = new ScrollPane(Box);
+					double preferredWidth = 300.0;
+					scrollPane.setPrefViewportWidth(preferredWidth);
+					scrollPane.setFitToHeight(true);
+					scrollPane.setFitToWidth(true);
+
+					borderbane1.setLeft(scrollPane);
+				});

@@ -1,0 +1,81 @@
+Button searchYears = new Button("Search Years");
+				searchYears.setOnAction(eventHandler -> {
+				    String Years = textfield3.getText();
+				    TextField t = new TextField("");
+				    int yearNumber = Integer.parseInt(Years);
+				    int totalIsraeliLines = 0;
+				    int totalGazaPowerPlant = 0;
+				    int totalTotalDaily = 0;
+				    double IsraeliAvg = 0.0;
+				    int Israelicount = 0;
+				    VBox vv = new VBox();
+
+				    YearNode<? extends Number> currentYearNode = yearlist.getHead();
+
+				    while (currentYearNode != null) {
+				        if (currentYearNode.getData().intValue() == yearNumber) {
+				            System.out.println(currentYearNode.getData() + " : ");
+
+				            MonthNode<? extends Number> currentMonthNode = currentYearNode.getMonthLinked().getHead();
+
+				            while (currentMonthNode != null) {
+				                DayNode<? extends Number> currentDayNode = currentMonthNode.getDaylinked().getHead();
+
+				                while (currentDayNode != null) {
+				                    // Create labels to display the information
+				                    Label monthLabel = new Label("Month: " + currentMonthNode.getData());
+				                    Label dayLabel = new Label("Day: " + currentDayNode.getData());
+				                    Label israeliLinesLabel = new Label("Israeil_Lines: " + currentDayNode.getIsraeil_Lines());
+				                    Label gazaPowerPlantLabel = new Label("Gaza_Power_Plant: " + currentDayNode.getGaza_Power_Plant());
+				                    Label egyptionLabel = new Label("Egyption_Lines: " + currentDayNode.getEygyption_Line());
+				                    Label totalDailyLabel = new Label("Total_daily_Supply: " + currentDayNode.getTotal_daily());
+				                    Label overallLabel = new Label("Over_all_demand: " + currentDayNode.getOverall_demand());
+				                    Label powerCutsLabel = new Label("Power_Cuts_hours_day :" + currentDayNode.getPower_Cuts_hours_day());
+				                    Label tempLabel = new Label("Temp: " + currentDayNode.getTemp());
+
+				                    // Add labels to VBox
+				                    vv.getChildren().addAll(monthLabel, dayLabel, israeliLinesLabel, gazaPowerPlantLabel,
+				                            egyptionLabel, totalDailyLabel, overallLabel, powerCutsLabel, tempLabel);
+
+				                    // Accumulate values for the entire month
+				                    totalIsraeliLines += currentDayNode.getIsraeil_Lines().intValue();
+				                    totalGazaPowerPlant += currentDayNode.getGaza_Power_Plant().intValue();
+				                    totalTotalDaily += currentDayNode.getTotal_daily().intValue();
+				                    Israelicount++;
+
+				                    currentDayNode = currentDayNode.getNext();
+				                }
+				                // Move to the next month in the linked list
+				                currentMonthNode = currentMonthNode.getNext();
+				            }
+				            break; // Exit the loop once the year is found
+				        }
+				        // Move to the next year in the linked list
+				        currentYearNode = currentYearNode.getNext();
+				    }
+
+				    if (Israelicount > 0) {
+				        // Compute the average Israeli lines
+				        IsraeliAvg = (double) totalIsraeliLines / Israelicount;
+				        Label avgLabel = new Label("Average Israeli Lines for the year: " + IsraeliAvg);
+				        vv.getChildren().add(avgLabel);
+				    } else {
+				        Label noDataLabel = new Label("No data available for the specified year.");
+				        vv.getChildren().add(noDataLabel);
+				    }
+
+				    Label totalIsraeliLinesLabel = new Label("Total Israeli Lines for the year: " + totalIsraeliLines);
+				    Label totalGazaPowerPlantLabel = new Label("Total Gaza Power Plant for the year: " + totalGazaPowerPlant);
+				    Label totalTotalDailyLabel = new Label("Total Total Daily for the year: " + totalTotalDaily);
+
+				    vv.getChildren().addAll(totalIsraeliLinesLabel, totalGazaPowerPlantLabel, totalTotalDailyLabel);
+
+				    ScrollPane scrollPane = new ScrollPane(vv);
+				    double preferredWidth = 300.0;
+				    scrollPane.setPrefViewportWidth(preferredWidth);
+				    scrollPane.setFitToHeight(true);
+				    scrollPane.setFitToWidth(true);
+
+				    // Set the content in your GUI, assuming borderbane1 is your layout
+				    borderbane1.setLeft(scrollPane);
+				});

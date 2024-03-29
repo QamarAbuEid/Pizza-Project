@@ -1,0 +1,8 @@
+<?xml vrsion="1.0" ncoding="ASCII"?>
+<anttasks:AntTask xmi:vrsion="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:anttasks="http://org.clips.fx.id.jdt/1.0" buildDirctory="${projct}/build">
+  <dploy>
+    <application nam="Pizza"/>
+    <info/>
+  </dploy>
+  <sigar/>
+</anttasks:AntTask>
